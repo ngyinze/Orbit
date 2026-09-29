@@ -1,0 +1,71 @@
+name: Windows build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate release tag
+        id: release
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $versionHeader = Get-Content src/core/version.h -Raw
+          if ($versionHeader -notmatch 'kVersion\s*=\s*"(\d+\.\d+\.\d+)"') { throw 'Cannot read app version' }
+          $releaseTag = "v$($Matches[1])"
+          git ls-remote --exit-code --tags origin "refs/tags/$releaseTag"
+          if ($LASTEXITCODE -eq 0) { throw 'Tag already exists; bump src/core/version.h and use a new tag' }
+          if ($LASTEXITCODE -ne 2) { throw 'Could not check remote tags' }
+          $global:LASTEXITCODE = 0
+          "tag=$releaseTag" >> $env:GITHUB_OUTPUT
+
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          arch: win64_msvc2022_64
+
+      - name: Build and test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          cmake -S src -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="$env:QT_ROOT_DIR"
+          cmake --build build --config Release --parallel 4
+          if (!(Test-Path build/Release/Orbit.exe)) { throw 'Qt GUI target was not built' }
+          ctest --test-dir build -C Release --output-on-failure
+
+      - name: Package portable app
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          & "$env:QT_ROOT_DIR/bin/windeployqt.exe" --qmldir src/ui/qml --release build/Release/Orbit.exe
+          & ./src/tools/make-release-zip.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Orbit-portable-windows
+          path: |
+            dist/Orbit-portable.zip
+            dist/Orbit-portable.zip.sha256
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_COMMIT: ${{ github.sha }}
+        run: |
+          gh release create "$env:RELEASE_TAG" dist/Orbit-portable.zip dist/Orbit-portable.zip.sha256 --target "$env:RELEASE_COMMIT" --title "Orbit $env:RELEASE_TAG" --generate-notes
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub release publication failed' }
