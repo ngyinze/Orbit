@@ -4,7 +4,7 @@
 // updateCustomGame. Opened for a fresh add (AppState.editGame === null) or to edit
 // an existing Custom row. Matches the CINEMA card look.
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import Orbit
