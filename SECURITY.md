@@ -53,7 +53,7 @@ The only network requests ORBIT makes are:
 
 1. **Cover / hero art** from the stores' public art endpoints (Steam, Epic catalog,
    GOG API, Xbox display catalog) — no API key, no account.
-2. **Update check** to `api.github.com/repos/tv7/Orbit/releases/latest` on launch, to
+2. **Update check** to `api.github.com/repos/ngyinze/Orbit/releases/latest` on launch, to
    see whether a newer release exists. It only reads the public release info and never
    downloads or installs anything automatically — you click Download and update by
    hand.

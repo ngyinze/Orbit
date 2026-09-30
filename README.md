@@ -2,6 +2,8 @@
 
 # ORBIT
 
+This is an independently maintained fork of [tv7/Orbit](https://github.com/tv7/Orbit), originally created by tv7. Releases and updates for this fork are published from [ngyinze/Orbit](https://github.com/ngyinze/Orbit).
+
 **One launcher for every game on your PC. ORBIT auto-detects everything installed
 from Steam, Epic Games, GOG and Xbox Game Pass and puts it all in a single fast,
 native library — click a game and it launches through the right store, every time.**
@@ -31,7 +33,7 @@ and a `Ctrl+K` palette to jump to any game.
 
 ## ⬇️ Download
 
-**Grab the latest release → [Releases](https://github.com/tv7/Orbit/releases/latest)**
+**Grab the latest release → [Releases](https://github.com/ngyinze/Orbit/releases/latest)**
 
 1. Download **`Orbit-portable.zip`**.
 2. Unzip it anywhere (Desktop, `D:\Apps\Orbit`, a USB stick — doesn't matter).
@@ -126,7 +128,7 @@ HTML/CSS UI, Steam-only. The C++ core is a behaviour-faithful port of that app's
 Python `core/` (validated byte-identical on real hardware), with Epic/GOG/Xbox
 added on top. The legacy stack (`core/`, `server.py`, `src-tauri/`, `web/`) was
 removed after v1.0.0 — browse it at the
-[`v1.0.0` tag](https://github.com/tv7/Orbit/tree/v1.0.0) if you need it.
+[`v1.0.0` tag](https://github.com/ngyinze/Orbit/tree/v1.0.0) if you need it.
 
 </details>
 
