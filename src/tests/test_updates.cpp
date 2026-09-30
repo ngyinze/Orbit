@@ -28,14 +28,14 @@ TEST_CASE(compare_versions_orders_correctly) {
 TEST_CASE(parse_latest_release_json) {
     std::string json = R"({
         "tag_name": "v1.3.0",
-        "html_url": "https://github.com/tv7/Orbit/releases/tag/v1.3.0",
+        "html_url": "https://github.com/ngyinze/Orbit/releases/tag/v1.3.0",
         "body": "## What's new\n- stuff",
         "draft": false
     })";
     auto r = updates::parseLatest(json);
     CHECK(r.has_value());
     CHECK_EQ(r->version, std::string("v1.3.0"));
-    CHECK_EQ(r->url, std::string("https://github.com/tv7/Orbit/releases/tag/v1.3.0"));
+    CHECK_EQ(r->url, std::string("https://github.com/ngyinze/Orbit/releases/tag/v1.3.0"));
     CHECK(r->notes.find("What's new") != std::string::npos);
     // No tag -> nothing.
     CHECK(!updates::parseLatest(R"({"name":"x"})").has_value());
@@ -44,15 +44,15 @@ TEST_CASE(parse_latest_release_json) {
 
 TEST_CASE(latest_release_fetches_via_http) {
     http::setFetcher([](const std::string& url) -> std::optional<std::string> {
-        if (url == "https://api.github.com/repos/tv7/Orbit/releases/latest")
+        if (url == "https://api.github.com/repos/ngyinze/Orbit/releases/latest")
             return std::string(R"({"tag_name":"1.4.0","html_url":"http://x","body":""})");
         return std::nullopt;
     });
-    auto r = updates::latestRelease("tv7/Orbit");
+    auto r = updates::latestRelease();
     CHECK(r.has_value());
     CHECK_EQ(r->version, std::string("1.4.0"));
     CHECK(updates::compareVersions(r->version, "1.1.0") > 0);   // newer than a shipped build
     http::setFetcher({});
     // Offline (no fetcher) -> nullopt, never throws.
-    CHECK(!updates::latestRelease("tv7/Orbit").has_value());
+    CHECK(!updates::latestRelease().has_value());
 }

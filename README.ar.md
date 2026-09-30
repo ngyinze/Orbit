@@ -4,6 +4,8 @@
 
 # ORBIT
 
+هذه نسخة متفرعة تُصان بشكل مستقل من [tv7/Orbit](https://github.com/tv7/Orbit)، الذي أنشأه tv7. تُنشر إصدارات هذه النسخة وتحديثاتها من [ngyinze/Orbit](https://github.com/ngyinze/Orbit).
+
 **مشغّل واحد لكل الألعاب على جهازك. يكتشف ORBIT تلقائيًا كل ما هو مثبَّت من Steam وEpic Games وGOG وXbox Game Pass ويجمعه في مكتبة واحدة سريعة — اضغط على أي لعبة وتشتغل عبر متجرها الصحيح، في كل مرة.**
 
 ![ORBIT أثناء العمل: مكتبة واحدة لكل متاجرك — اضغط على لعبة وتشتغل](assets/demo.gif)
@@ -22,7 +24,7 @@
 
 ## ⬇️ التنزيل وطريقة الاستخدام
 
-**نزّل آخر إصدار من هنا ← [Releases](https://github.com/tv7/Orbit/releases/latest)**
+**نزّل آخر إصدار من هنا ← [Releases](https://github.com/ngyinze/Orbit/releases/latest)**
 
 1. نزّل ملف **`Orbit-portable.zip`**.
 2. فُكّ الضغط في أي مكان (سطح المكتب، أي قرص، حتى فلاشة USB).

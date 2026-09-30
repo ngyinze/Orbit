@@ -164,8 +164,8 @@ std::vector<std::string> installRoots() {
         for (const auto& e : fs::directory_iterator(drive, ec)) {
             if (ec) break;
             std::error_code ec2;
-            if (e.is_directory(ec2) && containsXbox(e.path().filename().string()))
-                roots.push_back(e.path().string());
+            if (e.is_directory(ec2) && containsXbox(e.path().filename().u8string()))
+                roots.push_back(e.path().u8string());
         }
     }
     return roots;
@@ -175,8 +175,9 @@ std::vector<Game> installedGames() {
     std::vector<Game> out;
     std::error_code ec;
     for (const std::string& root : installRoots()) {
-        if (!fs::is_directory(root, ec)) continue;
-        for (const auto& gameDir : fs::directory_iterator(root, ec)) {
+        fs::path rootPath = fs::u8path(root);
+        if (!fs::is_directory(rootPath, ec)) continue;
+        for (const auto& gameDir : fs::directory_iterator(rootPath, ec)) {
             if (ec) break;
             if (!gameDir.is_directory()) continue;
             fs::path cfg = gameDir.path() / "Content" / "MicrosoftGame.config";
@@ -189,7 +190,7 @@ std::vector<Game> installedGames() {
             g.appid = 0;                      // UWP has no numeric appid; identity is the AUMID
             g.launchId = aumid(*parsed);
             g.name = parsed->displayName;
-            g.installdir = (gameDir.path() / "Content").string();
+            g.installdir = (gameDir.path() / "Content").u8string();
             g.fullyInstalled = true;
             // Cover hint = "<StoreId>|<absolute logo path>" ('|' is illegal in
             // Windows paths, so it's a safe separator). store_covers.cpp fetches
@@ -198,8 +199,8 @@ std::vector<Game> installedGames() {
             // logo — e.g. UE's — so it must not be the primary source).
             std::string logoAbs;
             if (!parsed->logoPath.empty()) {
-                fs::path logo = fs::path(g.installdir) / parsed->logoPath;
-                if (fs::exists(logo, ec)) logoAbs = logo.string();
+                fs::path logo = fs::u8path(g.installdir) / fs::u8path(parsed->logoPath);
+                if (fs::exists(logo, ec)) logoAbs = logo.u8string();
             }
             if (!parsed->storeId.empty() || !logoAbs.empty())
                 g.coverHint = parsed->storeId + "|" + logoAbs;

@@ -6,6 +6,6 @@
 
 namespace ss {
 
-inline constexpr const char* kVersion = "1.2.0";
+inline constexpr const char* kVersion = "1.2.1";
 
 }  // namespace ss

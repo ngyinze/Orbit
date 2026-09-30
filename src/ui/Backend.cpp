@@ -534,7 +534,7 @@ void Backend::checkForUpdates(bool manual) {
     updateState_ = "checking";
     emit updateChanged();
     pool_.start([this, manual] {
-        auto rel = updates::latestRelease("tv7/Orbit");
+        auto rel = updates::latestRelease();
         QString state, version, url, notes;
         if (!rel) {
             state = "error";
@@ -561,7 +561,7 @@ void Backend::checkForUpdates(bool manual) {
 
 void Backend::openDownloadPage() {
     if (!updateUrl_.isEmpty()) platform::openUri(updateUrl_.toStdString());
-    else platform::openUri("https://github.com/tv7/Orbit/releases/latest");
+    else platform::openUri("https://github.com/ngyinze/Orbit/releases/latest");
 }
 
 void Backend::skipThisUpdate() {

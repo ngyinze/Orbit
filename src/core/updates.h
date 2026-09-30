@@ -22,7 +22,7 @@ int compareVersions(const std::string& a, const std::string& b);
 
 // The latest published (non-draft, non-prerelease) release of `repo` ("owner/name"),
 // or nullopt when offline / on any error. Does NOT compare — the caller decides.
-std::optional<Release> latestRelease(const std::string& repo = "tv7/Orbit");
+std::optional<Release> latestRelease(const std::string& repo = "ngyinze/Orbit");
 
 // Parse GitHub's /releases/latest JSON into a Release (exposed for tests).
 std::optional<Release> parseLatest(const std::string& json);

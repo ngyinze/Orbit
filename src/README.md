@@ -190,7 +190,7 @@ the comparison, check out the `v1.0.0` tag, which contains both stacks.
   new qsTr strings aren't in `ar.qm` yet — they show English under RTL until the catalog
   is regenerated (Qt LinguistTools; watch the pyside6-lupdate ar.ts corruption trap).
 - **Update check — done + tested headless (post-v1.0.0):** notify-only (a portable app
-  shouldn't swap a running exe): `core/updates.*` GETs `api.github.com/repos/tv7/Orbit/
+  shouldn't swap a running exe): `core/updates.*` GETs `api.github.com/repos/ngyinze/Orbit/
   releases/latest` via the injected fetcher, parses `tag_name`/`html_url`/`body`, and
   `compareVersions` (dotted-numeric, tolerates a leading `v`, ignores pre-release suffixes)
   decides if it's newer than **`core/version.h` `ss::kVersion`** (the single source of truth).

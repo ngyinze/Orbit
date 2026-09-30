@@ -22,6 +22,7 @@ data/
 Thumbs.db
 
 # Dev-only / not for the public repo
+AGENTS.md
 CLAUDE.md
 .claude/
 .cloud/
