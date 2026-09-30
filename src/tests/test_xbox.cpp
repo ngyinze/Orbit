@@ -102,7 +102,7 @@ TEST_CASE(xbox_dlc_stub_is_skipped) {
 TEST_CASE(xbox_scan_finds_games_under_roots) {
     fs::path root = fs::temp_directory_path()
         / ("ss_xbox_" + std::to_string(ss::test::procId()) + "_" + std::to_string(rand()));
-    fs::path content = root / "Forsaken" / "Content";
+    fs::path content = root / fs::u8path(u8"遊戲") / "Content";
     fs::create_directories(content);
     std::ofstream(content / "MicrosoftGame.config", std::ios::binary) << R"(<Game>
         <Identity Name="Studio.Forsaken" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
@@ -121,4 +121,5 @@ TEST_CASE(xbox_scan_finds_games_under_roots) {
     CHECK_EQ(games[0].store == Store::Xbox, true);
     CHECK_EQ(games[0].launchId, std::string("Studio.Forsaken_8wekyb3d8bbwe!Game"));
     CHECK_EQ(games[0].appid, static_cast<int64_t>(0));
+    CHECK_EQ(fs::u8path(games[0].installdir), content);
 }
